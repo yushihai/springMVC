@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-<table>
+<table id="dataTable">
     <tr>
         <th colspan="5">员工信息</th>
     </tr>
@@ -27,7 +27,7 @@
         <th>lastname</th>
         <th>email</th>
         <th>gender</th>
-        <th>options</th>
+        <th>options（<a th:href="@{/toAdd}">add</a> ）</th>
     </tr>
     <tr th:each="employee : ${employeeList}">
         <td th:text="${employee.id}"></td>
@@ -35,10 +35,31 @@
         <td th:text="${employee.email}"></td>
         <td th:text="${employee.gender}"></td>
         <td>
-            <a href="">delete</a>
+            <a th:href="@{/employee/}+${employee.id}" @click="deleteEmployee">delete</a>
+            <!--<a th:href="@{'/employee/'+${employee.id}}">delete</a>-->
             <a href="">update</a>
         </td>
     </tr>
 </table>
+
+<form method="post" id="deleteForm">
+    <input type="hidden" name="_method" value="delete">
+</form>
+
+<script type="text/javascript" th:src="@{/static/js/vue.js}"></script>
+<script type="text/javascript">
+    var vue=new Vue({
+        el: "#dataTable",
+        methods: {
+            deleteEmployee: function (event) {
+                var deleteForm = document.getElementById("deleteForm");
+                deleteForm.action = event.target.href;
+                deleteForm.submit();
+                event.preventDefault();
+            }
+        }
+    });
+</script>
+
 </body>
 </html>

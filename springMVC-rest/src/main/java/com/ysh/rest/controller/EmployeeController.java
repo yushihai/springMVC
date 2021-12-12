@@ -5,6 +5,7 @@ import com.ysh.rest.dao.EmployeeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -21,5 +22,11 @@ public class EmployeeController {
         Collection<Employee> employeeList=employeeDao.getAll();
         model.addAttribute("employeeList",employeeList);
         return "employee_list";
+    }
+
+    @RequestMapping(value = "/employee/{id}",method = RequestMethod.DELETE)
+    public String deleteEmployee(@PathVariable("id") Integer id){
+        employeeDao.delete(id);
+        return "redirect:/employee";
     }
 }
